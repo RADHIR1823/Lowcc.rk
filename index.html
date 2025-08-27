@@ -1,113 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>lowcc.in</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>lowcc.in — Demo Store (EDUCATIONAL)</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #1e90ff, #00b894);
+    :root{
+      --bg1:#1e90ff;
+      --bg2:#00b894;
+      --glass: rgba(255,255,255,0.08);
+      --accent:#25d366;
+      --buy:#ff9800;
+      --text:#f7f9fa;
+      --muted: rgba(255,255,255,0.85);
+      --card-radius:14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(135deg, var(--bg1), var(--bg2));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+    }
+
+    /* fixed header */
+    header{
+      position:fixed;
+      top:0;
+      left:0;
+      right:0;
+      height:72px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 20px;
+      background: rgba(0,0,0,0.25);
+      backdrop-filter: blur(6px);
+      z-index:1000;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+    }
+    .brand{font-weight:800; font-size:20px; letter-spacing:1px}
+    .subtitle{font-size:13px; opacity:0.9}
+
+    /* demo warning */
+    .demo-note{
+      margin-left:20px;
+      background: linear-gradient(90deg, rgba(255,200,0,0.12), rgba(255,80,80,0.06));
+      color:#fff;
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:700;
+      font-size:12px;
+      border:1px solid rgba(255,255,255,0.06);
+    }
+
+    /* layout container */
+    main{
+      padding:100px 22px 48px; /* leave room for fixed header */
+      max-width:1100px;
+      margin:0 auto;
+    }
+
+    h1.section-title{
+      margin:0 0 18px 0;
+      font-size:22px;
+      text-align:left;
+      color:var(--muted);
+    }
+
+    /* grid */
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(auto-fit,minmax(260px,1fr));
+      gap:18px;
+    }
+
+    /* card */
+    .card{
+      background: var(--glass);
+      border-radius:var(--card-radius);
+      padding:16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+      transition: transform .18s ease, box-shadow .18s ease;
+      border: 1px solid rgba(255,255,255,0.04);
+    }
+    .card:hover{ transform: translateY(-6px); box-shadow:0 18px 36px rgba(0,0,0,0.35); }
+
+    .card .title{ font-size:17px; font-weight:700; margin-bottom:6px; color: #fff }
+    .card .price{ font-weight:800; font-size:16px; margin-bottom:8px; color: #fff }
+    .card .desc{ font-size:13px; color: rgba(255,255,255,0.9); margin-bottom:10px; line-height:1.35 }
+
+    .meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      margin-bottom:10px;
+    }
+
+    .badge{
+      background: rgba(255,255,255,0.04);
+      padding:6px 8px;
+      border-radius:10px;
+      font-size:12px;
       color: #fff;
-      text-align: center;
+      border:1px solid rgba(255,255,255,0.03);
     }
 
-    header {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      padding: 20px;
-      background: rgba(0,0,0,0.3);
-      font-size: 28px;
-      font-weight: bold;
-      letter-spacing: 1px;
-      z-index: 1000;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.4);
+    .buttons{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
     }
 
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 120px 30px 30px; /* extra top padding so cards don't hide behind header */
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:9px 12px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:700;
+      font-size:13px;
+      cursor:pointer;
+      border:none;
+      transition: transform .12s ease;
+      color:#fff;
+    }
+    .btn:active{ transform: translateY(1px) }
+    .btn.whatsapp{ background: var(--accent) }
+    .btn.buy{ background: var(--buy); color:#111 }
+    .btn.copy{ background: rgba(255,255,255,0.06) }
+
+    /* footer small note */
+    .note{
+      margin-top:18px;
+      font-size:13px;
+      color: rgba(255,255,255,0.9);
+      text-align:left;
     }
 
-    .card {
-      background: rgba(255,255,255,0.1);
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-      backdrop-filter: blur(10px);
-      transition: transform 0.3s;
-    }
-
-    .card:hover {
-      transform: translateY(-5px);
-    }
-
-    .card h2 {
-      margin: 10px 0;
-      font-size: 20px;
-    }
-
-    .card p {
-      margin: 8px 0;
-      font-size: 14px;
-    }
-
-    .btn {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 15px;
-      background: #25d366;
-      color: #fff;
-      text-decoration: none;
-      font-weight: bold;
-      border-radius: 25px;
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background: #1ebe5d;
-    }
-
-    .buy-btn {
-      background: #ff9800;
-      margin-left: 10px;
-    }
-
-    .buy-btn:hover {
-      background: #e68900;
+    /* responsive tweaks */
+    @media (max-width:420px){
+      header{ padding:0 12px; height:78px }
+      .brand{ font-size:18px }
+      main{ padding:110px 12px 36px }
     }
   </style>
 </head>
 <body>
-  <header>lowcc.in</header>
+  <header>
+    <div style="display:flex;align-items:center;gap:14px">
+      <div class="brand">lowcc.in</div>
+      <div class="subtitle">Demo Store • Educational</div>
+      <div class="demo-note">DEMO — FOR EDUCATIONAL PURPOSES ONLY</div>
+    </div>
 
-  <div class="container">
-    <div class="card"><h2>Product 1</h2><p><strong>Price:</strong> 500 INR</p><p><strong>Description:</strong> Entry-level product with useful features.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 2</h2><p><strong>Price:</strong> 750 INR</p><p><strong>Description:</strong> Affordable item with great performance.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 3</h2><p><strong>Price:</strong> 1200 INR</p><p><strong>Description:</strong> Standard product with extra benefits.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 4</h2><p><strong>Price:</strong> 1500 INR</p><p><strong>Description:</strong> Premium quality product with durability.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 5</h2><p><strong>Price:</strong> 2000 INR</p><p><strong>Description:</strong> Reliable mid-range option for customers.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 6</h2><p><strong>Price:</strong> 2500 INR</p><p><strong>Description:</strong> Advanced features with great support.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 7</h2><p><strong>Price:</strong> 3000 INR</p><p><strong>Description:</strong> High-end product for professionals.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 8</h2><p><strong>Price:</strong> 3700 INR</p><p><strong>Description:</strong> Extra durability and reliability built-in.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 9</h2><p><strong>Price:</strong> 4200 INR</p><p><strong>Description:</strong> Popular choice with balanced features.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 10</h2><p><strong>Price:</strong> 5000 INR</p><p><strong>Description:</strong> Professional-grade product with warranty.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 11</h2><p><strong>Price:</strong> 5800 INR</p><p><strong>Description:</strong> Enhanced edition with premium support.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 12</h2><p><strong>Price:</strong> 6500 INR</p><p><strong>Description:</strong> Enterprise-ready solution with advanced tools.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 13</h2><p><strong>Price:</strong> 7200 INR</p><p><strong>Description:</strong> Optimized product for power users.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 14</h2><p><strong>Price:</strong> 8000 INR</p><p><strong>Description:</strong> High-capacity solution with flexibility.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 15</h2><p><strong>Price:</strong> 8800 INR</p><p><strong>Description:</strong> Premium product trusted by many customers.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 16</h2><p><strong>Price:</strong> 9500 INR</p><p><strong>Description:</strong> Advanced edition with maximum reliability.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 17</h2><p><strong>Price:</strong> 10500 INR</p><p><strong>Description:</strong> Deluxe package with premium quality.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 18</h2><p><strong>Price:</strong> 11200 INR</p><p><strong>Description:</strong> Comprehensive solution with latest features.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 19</h2><p><strong>Price:</strong> 12000 INR</p><p><strong>Description:</strong> Complete product for all customer needs.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-    <div class="card"><h2>Product 20</h2><p><strong>Price:</strong> 13500 INR</p><p><strong>Description:</strong> Ultimate product with top-tier performance.</p><a class="btn" href="https://wa.me/917095921841" target="_blank">Contact</a><a class="btn buy-btn" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank">Buy Now</a></div>
-  </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <!-- Copy WhatsApp number -->
+      <button class="btn copy" id="copyBtn" title="Copy WhatsApp number">Copy WhatsApp</button>
+      <!-- quick contact -->
+      <a class="btn whatsapp" href="https://wa.me/917095921841" target="_blank" rel="noopener">WhatsApp</a>
+    </div>
+  </header>
+
+  <main>
+    <h1 class="section-title">20 Demo Cards — Layout & Styling (Replace with legal content)</h1>
+
+    <div class="grid" id="cardsGrid">
+      <!-- Cards generated by JS for clarity; each card contains demo "Balance / Limit" -->
+    </div>
+
+    <p class="note">
+      NOTE: This page is a demonstration template only. The "Balance / Limit" shown on each card is a <strong>sample value</strong> for learning layout and style — do NOT use or publish real financial or personally identifiable information here.
+    </p>
+  </main>
+
+  <script>
+    // Demo data: placeholder names + sample price + sample "Balance / Limit" (educational dummy values)
+    const demoItems = [
+      {name:'Demo Card 1', price:'500 INR', limit:'Limit up to 5,000 INR'},
+      {name:'Demo Card 2', price:'750 INR', limit:'Limit up to 7,500 INR'},
+      {name:'Demo Card 3', price:'1200 INR', limit:'Limit up to 12,000 INR'},
+      {name:'Demo Card 4', price:'1500 INR', limit:'Limit up to 15,000 INR'},
+      {name:'Demo Card 5', price:'2000 INR', limit:'Limit up to 20,000 INR'},
+      {name:'Demo Card 6', price:'2500 INR', limit:'Limit up to 25,000 INR'},
+      {name:'Demo Card 7', price:'3000 INR', limit:'Limit up to 30,000 INR'},
+      {name:'Demo Card 8', price:'3700 INR', limit:'Limit up to 37,000 INR'},
+      {name:'Demo Card 9', price:'4200 INR', limit:'Limit up to 42,000 INR'},
+      {name:'Demo Card 10', price:'5000 INR', limit:'Limit up to 50,000 INR'},
+      {name:'Demo Card 11', price:'5800 INR', limit:'Limit up to 58,000 INR'},
+      {name:'Demo Card 12', price:'6500 INR', limit:'Limit up to 65,000 INR'},
+      {name:'Demo Card 13', price:'7200 INR', limit:'Limit up to 72,000 INR'},
+      {name:'Demo Card 14', price:'8000 INR', limit:'Limit up to 80,000 INR'},
+      {name:'Demo Card 15', price:'8800 INR', limit:'Limit up to 88,000 INR'},
+      {name:'Demo Card 16', price:'9500 INR', limit:'Limit up to 95,000 INR'},
+      {name:'Demo Card 17', price:'10,500 INR', limit:'Limit up to 105,000 INR'},
+      {name:'Demo Card 18', price:'11,200 INR', limit:'Limit up to 112,000 INR'},
+      {name:'Demo Card 19', price:'12,000 INR', limit:'Limit up to 120,000 INR'},
+      {name:'Demo Card 20', price:'13,500 INR', limit:'Limit up to 135,000 INR'}
+    ];
+
+    const grid = document.getElementById('cardsGrid');
+
+    demoItems.forEach((it, idx) => {
+      const div = document.createElement('div');
+      div.className = 'card';
+      div.innerHTML = `
+        <div class="title">${it.name}</div>
+        <div class="price">PRICE: <strong>${it.price}</strong></div>
+        <div class="desc">DESCRIPTION: <strong>${it.limit}</strong></div>
+        <div class="meta">
+          <div class="badge">Demo only</div>
+          <div class="badge">Card #${idx + 1}</div>
+        </div>
+        <div class="buttons">
+          <a class="btn whatsapp" href="https://wa.me/917095921841" target="_blank" rel="noopener">Send Screenshot on WhatsApp</a>
+          <a class="btn buy" href="https://radhir1823.github.io/Payment-gateway-/" target="_blank" rel="noopener">Buy (Demo redirect)</a>
+        </div>
+      `;
+      grid.appendChild(div);
+    });
+
+    // copy WhatsApp number to clipboard
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+      const num = '+917095921841';
+      try{
+        await navigator.clipboard.writeText(num);
+        const old = document.getElementById('copyBtn').textContent;
+        document.getElementById('copyBtn').textContent = 'Copied ✔';
+        setTimeout(()=> document.getElementById('copyBtn').textContent = old, 1600);
+      }catch(e){
+        alert('Copy not available — use long-press to copy: ' + num);
+      }
+    });
+  </script>
 </body>
 </html>
